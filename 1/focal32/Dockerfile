@@ -5,6 +5,7 @@ RUN dpkg --add-architecture i386 \
     && apt-get update \
     && apt-get -y upgrade \
     && apt-get install --no-install-recommends -y \
+        ccache \
         clang \
         cmake \
         g++-multilib \
