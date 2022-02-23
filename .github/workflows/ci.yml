@@ -39,9 +39,9 @@ jobs:
         run: |
           if [ "$dockerid" != "" ]; then
               docker login -u "$dockerid" -p "$dockerpass"
-              docker pull openloco/openloco:1-bionic
-              docker tag openloco/openloco:1-bionic openloco/openloco:4
-              docker tag openloco/openloco:1-bionic openloco/openloco:latest
+              docker pull openloco/openloco:1-bionic32
+              docker tag openloco/openloco:1-bionic32 openloco/openloco:1
+              docker tag openloco/openloco:1-bionic32 openloco/openloco:latest
               docker push openloco/openloco:1
               docker push openloco/openloco:latest
           else
