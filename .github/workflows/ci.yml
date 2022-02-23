@@ -1,0 +1,49 @@
+name: CI
+on: [push, pull_request]
+env:
+  dockerid: ${{ secrets.DOCKER_LOGIN }}
+  dockerpass: ${{ secrets.DOCKER_TOKEN }}
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Remember if you commit this, newly built images will replace those tags.
+        # Prefer incrementing the version to unused one
+        tag: [1-bionic32, 1-mingw32, 1-focal32]
+    env:
+      dockertag: ${{ matrix.tag }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Build docker image
+        run: |
+          ctxpath=${dockertag//-/\/}
+          docker build -t openloco/openloco:$dockertag $ctxpath
+      - name: Publish docker image
+        run: |
+          if [ "$dockerid" != "" ]; then
+              docker login -u "$dockerid" -p "$dockerpass"
+              docker push openloco/openloco:$dockertag
+          else
+              echo 'Image not pushed'
+          fi
+  tag:
+    name: Tag images
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tag docker images
+        run: |
+          if [ "$dockerid" != "" ]; then
+              docker login -u "$dockerid" -p "$dockerpass"
+              docker pull openloco/openloco:1-bionic
+              docker tag openloco/openloco:1-bionic openloco/openloco:4
+              docker tag openloco/openloco:1-bionic openloco/openloco:latest
+              docker push openloco/openloco:1
+              docker push openloco/openloco:latest
+          else
+              echo 'Images not tagged'
+          fi
