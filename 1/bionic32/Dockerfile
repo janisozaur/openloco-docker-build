@@ -1,6 +1,5 @@
-FROM ubuntu:20.04
+FROM ubuntu:18.04
 
-ENV DEBIAN_FRONTEND=noninteractive
 RUN dpkg --add-architecture i386 \
     && apt-get update \
     && apt-get -y upgrade \
@@ -14,6 +13,7 @@ RUN dpkg --add-architecture i386 \
         libpng-dev:i386 \
         libsdl2-dev:i386 \
         libsdl2-mixer-dev:i386 \
+        libyaml-cpp-dev:i386 \
         ninja-build \
         pkg-config:i386 \
     && rm -rf /var/lib/apt/lists/*
