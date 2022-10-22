@@ -12,10 +12,10 @@ RUN dpkg --add-architecture i386 \
         g++-multilib \
         gcc-multilib \
         git \
+        libgtest-dev \
         libopenal-dev:i386 \
         libpng-dev:i386 \
         libsdl2-dev:i386 \
-        libsdl2-mixer-dev:i386 \
         ninja-build \
         pkg-config:i386 \
     && update-ca-certificates \
