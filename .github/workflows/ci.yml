@@ -22,6 +22,7 @@ jobs:
           SLUG=$(echo ${{ github.repository_owner }}/openloco | tr '[A-Z]' '[a-z]')
           docker build -t openloco $ctxpath
       - name: Push image to registry
+        if: github.event_name == 'push' && github.ref_name == 'master'
         run: |
           SLUG=$(echo ${{ github.repository_owner }}/openloco | tr '[A-Z]' '[a-z]')
           if [ "${{ secrets.GITHUB_TOKEN }}" != "" ]; then
@@ -39,6 +40,7 @@ jobs:
       REGISTRY: ghcr.io
     steps:
       - name: Tag docker images
+        if: github.event_name == 'push' && github.ref_name == 'master'
         run: |
           if [ "${{ secrets.GITHUB_TOKEN }}" != "" ]; then
               SLUG=$(echo ${{ github.repository_owner }}/openloco | tr '[A-Z]' '[a-z]')
